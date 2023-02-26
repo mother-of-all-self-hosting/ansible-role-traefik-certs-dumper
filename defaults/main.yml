@@ -47,4 +47,4 @@ devture_traefik_certs_dumper_waiter_systemd_required_services_list:
 
 # The maximum iterations to wait for a file to appear before giving up in `devture-traefik-certs-dumper-wait-for-domain@.service`.
 # There's a 1 second sleep between iterations.
-devture_traefik_certs_dumper_waiter_max_iterations: 30
+devture_traefik_certs_dumper_waiter_max_iterations: 60
