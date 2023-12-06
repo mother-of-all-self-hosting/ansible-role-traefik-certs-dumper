@@ -3,7 +3,7 @@
 
 devture_traefik_certs_dumper_enabled: true
 
-devture_traefik_certs_dumper_version: v2.8.1
+devture_traefik_certs_dumper_version: v2.8.3
 
 devture_traefik_certs_dumper_uid: ''
 devture_traefik_certs_dumper_gid: ''
