@@ -32,6 +32,10 @@ devture_traefik_certs_dumper_container_post_hook: "/bin/sh /certs-dumper-bin/cop
 # A list of extra arguments to pass to the container
 devture_traefik_certs_dumper_container_extra_arguments: []
 
+# We only give it a short grace time, because the container does not handle SIGTERM and we need to wait and kill it.
+# If the container starts respecting SIGTERM, we may switch to a longer interval (e.g. `devture_systemd_docker_base_container_stop_grace_time_seconds`).
+devture_traefik_certs_dumper_container_stop_grace_time_seconds: 1
+
 # Contains the path to the Traefik SSL certificates.
 # We would expect a JSON file with certificates there.
 # The name of the file that we expect is defined in `devture_traefik_certs_dumper_ssl_acme_file_name`.
