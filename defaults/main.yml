@@ -21,7 +21,7 @@ devture_traefik_certs_dumper_dumped_certificates_dir_owner: "{{ devture_traefik_
 devture_traefik_certs_dumper_dumped_certificates_dir_group: "{{ devture_traefik_certs_dumper_gid }}"
 devture_traefik_certs_dumper_dumped_certificates_dir_mode: "0750"
 
-devture_traefik_certs_dumper_systemd_required_services_list: ['docker.service']
+devture_traefik_certs_dumper_systemd_required_services_list: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 
 devture_traefik_certs_dumper_container_image: "{{ devture_traefik_certs_dumper_container_image_registry_prefix }}ldez/traefik-certs-dumper:{{ devture_traefik_certs_dumper_container_image_tag }}"
 devture_traefik_certs_dumper_container_image_tag: "{{ devture_traefik_certs_dumper_version }}"
