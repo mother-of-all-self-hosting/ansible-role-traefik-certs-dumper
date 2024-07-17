@@ -16,4 +16,4 @@
 --dest /intermediate \
 --watch \
 --post-hook "{{ devture_traefik_certs_dumper_container_post_hook }}" \
---domain-subdir {{ devture_traefik_certs_dumper_container_extra_arguments | join(" ") }}
+--domain-subdir {{ devture_traefik_certs_dumper_container_process_extra_arguments | join(" ") }}

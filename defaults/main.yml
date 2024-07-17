@@ -30,7 +30,16 @@ devture_traefik_certs_dumper_container_image_registry_prefix: docker.io/
 devture_traefik_certs_dumper_container_post_hook: "/bin/sh /certs-dumper-bin/copy-certificates.sh /intermediate /staging /out"
 
 # A list of extra arguments to pass to the container
-devture_traefik_certs_dumper_container_extra_arguments: []
+devture_traefik_certs_dumper_container_extra_arguments: "{{ devture_traefik_certs_dumper_container_extra_arguments_default + devture_traefik_certs_dumper_container_extra_arguments_auto + devture_traefik_certs_dumper_container_extra_arguments_custom }}"
+devture_traefik_certs_dumper_container_extra_arguments_default: []
+devture_traefik_certs_dumper_container_extra_arguments_auto: []
+devture_traefik_certs_dumper_container_extra_arguments_custom: []
+
+# A list of extra arguments to pass to the container process
+devture_traefik_certs_dumper_container_process_extra_arguments: "{{ devture_traefik_certs_dumper_container_process_extra_arguments_default + devture_traefik_certs_dumper_container_process_extra_arguments_auto + devture_traefik_certs_dumper_container_process_extra_arguments_custom }}"
+devture_traefik_certs_dumper_container_process_extra_arguments_default: []
+devture_traefik_certs_dumper_container_process_extra_arguments_auto: []
+devture_traefik_certs_dumper_container_process_extra_arguments_custom: []
 
 # We only give it a short grace time, because the container does not handle SIGTERM and we need to wait and kill it.
 # If the container starts respecting SIGTERM, we may switch to a longer interval (e.g. `devture_systemd_docker_base_container_stop_grace_time_seconds`).
