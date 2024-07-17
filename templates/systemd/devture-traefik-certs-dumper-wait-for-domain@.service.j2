@@ -20,6 +20,9 @@ ExecStart={{ devture_systemd_docker_base_host_command_docker }} run \
 			--mount type=bind,src={{ devture_traefik_certs_dumper_bin_dir_path }},dst=/certs-dumper-bin,ro \
 			--mount type=bind,src={{ devture_traefik_certs_dumper_dumped_certificates_dir_path }},dst={{ devture_traefik_certs_dumper_dumped_certificates_dir_path }},ro \
 			--entrypoint=/bin/sh \
+			{% for arg in devture_traefik_certs_dumper_container_process_extra_arguments %}
+			{{ arg }} \
+			{% endfor %}
 			{{ devture_traefik_certs_dumper_container_image }} \
 			-c '/certs-dumper-bin/wait-for-domain.sh %i'
 
