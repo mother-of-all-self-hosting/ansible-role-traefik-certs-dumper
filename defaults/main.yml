@@ -3,7 +3,7 @@
 
 traefik_certs_dumper_enabled: true
 
-traefik_certs_dumper_version: v2.8.3
+traefik_certs_dumper_version: v2.10.0
 
 traefik_certs_dumper_uid: ''
 traefik_certs_dumper_gid: ''
@@ -27,7 +27,7 @@ traefik_certs_dumper_container_image: "{{ traefik_certs_dumper_container_image_r
 traefik_certs_dumper_container_image_tag: "{{ traefik_certs_dumper_version }}"
 traefik_certs_dumper_container_image_registry_prefix: "{{ traefik_certs_dumper_container_image_registry_prefix_upstream }}"
 traefik_certs_dumper_container_image_registry_prefix_upstream: "{{ traefik_certs_dumper_container_image_registry_prefix_upstream_default }}"
-traefik_certs_dumper_container_image_registry_prefix_upstream_default: docker.io/
+traefik_certs_dumper_container_image_registry_prefix_upstream_default: ghcr.io/
 
 traefik_certs_dumper_container_post_hook: "/bin/sh /certs-dumper-bin/copy-certificates.sh /intermediate /staging /out"
 
