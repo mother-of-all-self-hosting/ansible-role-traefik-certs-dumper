@@ -7,6 +7,7 @@
 
 traefik_certs_dumper_enabled: true
 
+# renovate: datasource=docker depName=ghcr.io/ldez/traefik-certs-dumper versioning=semver
 traefik_certs_dumper_version: v2.10.0
 
 traefik_certs_dumper_uid: ''
