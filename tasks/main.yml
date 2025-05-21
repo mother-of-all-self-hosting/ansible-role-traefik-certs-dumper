@@ -4,11 +4,14 @@
 
 ---
 
-- block:
-    - when: traefik_certs_dumper_enabled | bool
+- name: Perform Traefik certs dumper installation tasks
+  block:
+    - name: Validate Traefik certs dumper configuration
+      when: traefik_certs_dumper_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
 
-    - when: traefik_certs_dumper_enabled | bool
+    - name: Install Traefik certs dumper
+      when: traefik_certs_dumper_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
   tags:
     - setup-all
@@ -16,8 +19,10 @@
     - install-all
     - install-traefik-certs-dumper
 
-- block:
-    - when: not traefik_certs_dumper_enabled | bool
+- name: Perform Traefik certs dumper uninstallation tasks
+  block:
+    - name: Uninstall Traefik certs dumper
+      when: not traefik_certs_dumper_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
   tags:
     - setup-all
