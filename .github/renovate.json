@@ -7,6 +7,17 @@
   "labels": [
     "dependencies"
   ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "/ansible-lint/",
+        "/pre-commit-hooks/"
+      ],
+      "enabled": true,
+      "automerge": true,
+      "automergeType": "branch"
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
