@@ -19,9 +19,9 @@ while ! [ -f $path ]; do
     fi
 
     if [ "$max_iterations" -gt "0" ]; then
-    	echo "$path is missing.. Waiting ($counter/$max_iterations)..."
+        echo "$path is missing.. Waiting ($counter/$max_iterations)..."
     else
-    	echo "$path is missing.. Waiting ($counter/inf.)..."
+        echo "$path is missing.. Waiting ($counter/inf.)..."
     fi
 
     sleep 1
