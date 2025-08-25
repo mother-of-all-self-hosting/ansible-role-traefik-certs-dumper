@@ -38,18 +38,18 @@ Example playbook configuration (`group_vars/servers` or other):
 traefik_certs_dumper_uid: "{{ my_uid }}"
 traefik_certs_dumper_gid: "{{ my_gid }}"
 
-traefik_certs_dumper_ssl_dir_path: "{{ traefik_ssl_dir_path }}"
+traefik_certs_dumper_ssl_path: "{{ traefik_ssl_dir_path }}"
 ```
 
 ### systemd
 
 #### traefik-certs-dumper.service
 
-You can then start the `traefik-certs-dumper.service` systemd service, which watches for a certificate file (`acme.json`, but configurable via `traefik_certs_dumper_ssl_acme_file_name`) in the SSL certificates directory (`traefik_certs_dumper_ssl_dir_path`).
+You can then start the `traefik-certs-dumper.service` systemd service, which watches for a certificate file (`acme.json`, but configurable via `traefik_certs_dumper_ssl_acme_file_name`) in the SSL certificates directory (`traefik_certs_dumper_ssl_path`).
 
 When a certificate file appears or whenever it changes in the future, all of its certificates are:
 
-- dumped using [traefik-certs-dumper](https://github.com/ldez/traefik-certs-dumper) to `/traefik-certs-dumper/dumped-certificates` (configurable via `traefik_certs_dumper_dumped_certificates_dir_path`)
+- dumped using [traefik-certs-dumper](https://github.com/ldez/traefik-certs-dumper) to `/traefik-certs-dumper/dumped-certificates` (configurable via `traefik_certs_dumper_dumped_certificates_path`)
 - re-chowned, so that they're owned by `traefik_certs_dumper_dumped_certificates_dir_owner` / `traefik_certs_dumper_dumped_certificates_dir_owner` (defaulting to `traefik_certs_dumper_uid` and `traefik_certs_dumper_gid`, respectively)
 
 The directory tree would look like this:
