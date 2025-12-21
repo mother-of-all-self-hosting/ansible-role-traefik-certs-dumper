@@ -22,8 +22,8 @@ traefik_certs_dumper_dumped_certificates_dir_mode: "0750"
 # renovate: datasource=docker depName=ghcr.io/ldez/traefik-certs-dumper versioning=semver
 traefik_certs_dumper_version: v2.10.0
 
-traefik_certs_dumper_uid: ''
-traefik_certs_dumper_gid: ''
+traefik_certs_dumper_uid: ""
+traefik_certs_dumper_gid: ""
 
 traefik_certs_dumper_container_image: "{{ traefik_certs_dumper_container_image_registry_prefix }}ldez/traefik-certs-dumper:{{ traefik_certs_dumper_container_image_tag }}"
 traefik_certs_dumper_container_image_tag: "{{ traefik_certs_dumper_version }}"
@@ -53,7 +53,7 @@ traefik_certs_dumper_container_stop_grace_time_seconds: 1
 # We would expect a JSON file with certificates there.
 # The name of the file that we expect is defined in `traefik_certs_dumper_ssl_acme_file_name`.
 # Initially (before Traefik has initialized), the file may not exist.
-traefik_certs_dumper_ssl_path: ''
+traefik_certs_dumper_ssl_path: ""
 
 # Contains the name of the ACME certificates file that we'll dump certificates from.
 # This file is expected to be underneath the directory defined in `traefik_certs_dumper_ssl_path`.
