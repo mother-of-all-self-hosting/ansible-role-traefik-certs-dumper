@@ -1,4 +1,5 @@
-# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023-2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -69,3 +70,9 @@ traefik_certs_dumper_waiter_systemd_required_services_list: |-
 # The maximum iterations to wait for a file to appear before giving up in `traefik-certs-dumper-wait-for-domain@.service`.
 # There's a 1 second sleep between iterations.
 traefik_certs_dumper_waiter_max_iterations: 180
+
+# Specify the timezone
+traefik_certs_dumper_environment_variables_tz: UTC
+
+# Additional environment variables.
+traefik_certs_dumper_environment_variables_additional_variables: ""
