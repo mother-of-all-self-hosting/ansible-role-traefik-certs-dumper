@@ -34,6 +34,20 @@
     - env
   register: traefik_certs_dumper_support_files_result
 
+- name: Ensure Traefik certs dumper scripts installed
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/bin/{{ item }}"
+    dest: "{{ traefik_certs_dumper_bin_path }}/{{ item }}"
+    owner: "{{ traefik_certs_dumper_uid }}"
+    group: "{{ traefik_certs_dumper_gid }}"
+    mode: "0750"
+  with_items:
+    - wait-for-file.sh
+    - wait-for-domain.sh
+    - copy-certificates.sh
+    - entrypoint.sh
+  register: traefik_certs_dumper_scripts_result
+
 - name: Ensure Traefik certs dumper container image is pulled via community.docker.docker_image
   when: devture_systemd_docker_base_container_image_pull_method == 'ansible-module'
   community.docker.docker_image:
@@ -55,20 +69,6 @@
   delay: "{{ devture_playbook_help_container_retries_delay }}"
   until: traefik_certs_dumper_container_image_pull_result_command is not failed
   changed_when: "'Downloaded newer image' in traefik_certs_dumper_container_image_pull_result_command.stdout"
-
-- name: Ensure Traefik certs dumper scripts installed
-  ansible.builtin.template:
-    src: "{{ role_path }}/templates/bin/{{ item }}"
-    dest: "{{ traefik_certs_dumper_bin_path }}/{{ item }}"
-    owner: "{{ traefik_certs_dumper_uid }}"
-    group: "{{ traefik_certs_dumper_gid }}"
-    mode: "0750"
-  with_items:
-    - wait-for-file.sh
-    - wait-for-domain.sh
-    - copy-certificates.sh
-    - entrypoint.sh
-  register: traefik_certs_dumper_scripts_result
 
 - name: Ensure Traefik certs dumper systemd services are present
   ansible.builtin.template:
