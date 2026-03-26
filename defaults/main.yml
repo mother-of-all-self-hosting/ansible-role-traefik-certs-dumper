@@ -31,7 +31,7 @@ traefik_certs_dumper_container_image_tag: "{{ traefik_certs_dumper_version }}"
 traefik_certs_dumper_container_image_registry_prefix: "{{ traefik_certs_dumper_container_image_registry_prefix_upstream }}"
 traefik_certs_dumper_container_image_registry_prefix_upstream: "{{ traefik_certs_dumper_container_image_registry_prefix_upstream_default }}"
 traefik_certs_dumper_container_image_registry_prefix_upstream_default: ghcr.io/
-traefik_certs_dumper_container_image_force_pull: "{{ memos_container_image.endswith(':latest') }}"
+traefik_certs_dumper_container_image_force_pull: "{{ traefik_certs_dumper_container_image.endswith(':latest') }}"
 
 # Specify the size of the container's tmpfs volume (intermediate)
 traefik_certs_dumper_container_tmpfs_intermediate_size: 128m
