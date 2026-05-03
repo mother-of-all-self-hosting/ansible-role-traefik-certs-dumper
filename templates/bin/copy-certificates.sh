@@ -13,7 +13,7 @@ in=$1
 staging=$2
 out=$3
 
-echo 'Copying traefik-certs-dumper certificates ('$in') to '$out' via '$staging
+echo "Copying traefik-certs-dumper certificates ($in) to $out via $staging"
 
 cp -ar "$in/." "$staging/."
 
