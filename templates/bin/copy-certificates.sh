@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-if [ $# -ne 3 ]; then
+if [ $# -ne 3 ] || [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   echo "Usage: $0 <in_dir> <staging_dir> <out_dir>" >&2
   exit 1
 fi
