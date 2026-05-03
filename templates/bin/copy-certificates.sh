@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 if [ $# -ne 3 ]; then
   echo "Usage: $0 <in_dir> <staging_dir> <out_dir>" >&2
   exit 1
