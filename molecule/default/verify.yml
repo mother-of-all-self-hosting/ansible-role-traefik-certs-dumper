@@ -482,11 +482,11 @@
           The waiter succeeded for {{ traefik_certs_dumper_molecule_domain }} and failed for
           {{ traefik_certs_dumper_molecule_absent_domain }}
 
-    - name: Show Traefik certs dumper verification summary
+    - name: Show the Traefik certs dumper verification summary
       ansible.builtin.debug:
         msg:
           - "Traefik certs dumper systemd: {{ traefik_certs_dumper_service.status.ActiveState }}"
           - "Traefik certs dumper image: {{ traefik_certs_dumper_running_image }} ({{ traefik_certs_dumper_image_version | trim }})"
-          - "Dumped certificate: {{ traefik_certs_dumper_dumped_subject.stdout | trim }}"
-          - "Re-dumped after acme.json changed: {{ traefik_certs_dumper_molecule_appended_domain }}"
-          - "Waiter results: {{ traefik_certs_dumper_waiter_results.results | map(attribute='stdout_lines') | list }}"
+          - "Traefik certs dumper dumped certificate: {{ traefik_certs_dumper_dumped_subject.stdout | trim }}"
+          - "Traefik certs dumper re-dumped after acme.json changed: {{ traefik_certs_dumper_molecule_appended_domain }}"
+          - "Traefik certs dumper waiter results: {{ traefik_certs_dumper_waiter_results.results | map(attribute='stdout_lines') | list }}"
