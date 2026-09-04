@@ -178,13 +178,8 @@
         that: >-
           (traefik_certs_dumper_image_version | trim | regex_replace('^v', ''))
           == (traefik_certs_dumper_defaults.traefik_certs_dumper_version | regex_replace('^v', ''))
-        fail_msg: >-
-          The running container is {{ traefik_certs_dumper_running_image }}, whose image reports
-          version {{ traefik_certs_dumper_image_version | trim }}, expected
-          {{ traefik_certs_dumper_defaults.traefik_certs_dumper_version }}
-        success_msg: >-
-          The running container is {{ traefik_certs_dumper_running_image }}, whose image reports
-          version {{ traefik_certs_dumper_image_version | trim }}
+        fail_msg: "Traefik certs dumper reports {{ traefik_certs_dumper_image_version | trim | default('none') }}, expected {{ traefik_certs_dumper_defaults.traefik_certs_dumper_version }}"
+        success_msg: "Traefik certs dumper reports {{ traefik_certs_dumper_image_version | trim }}"
 
     # ---------------------------------------------------------------------
     # The seeded certificate got dumped
