@@ -151,7 +151,7 @@
       register: traefik_certs_dumper_container_inspect
       changed_when: false
 
-    - name: Make sense of the running Traefik certs dumper container
+    - name: Parse the running Traefik certs dumper container definition
       ansible.builtin.set_fact:
         traefik_certs_dumper_running_image: >-
           {{ (traefik_certs_dumper_container_inspect.stdout | from_json)[0].Config.Image }}
@@ -166,7 +166,7 @@
       register: traefik_certs_dumper_image_inspect
       changed_when: false
 
-    - name: Make sense of the Traefik certs dumper image
+    - name: Parse the Traefik certs dumper image definition
       ansible.builtin.set_fact:
         traefik_certs_dumper_image_version: >-
           {{ (traefik_certs_dumper_image_inspect.stdout | from_json)[0].Config.Labels['org.opencontainers.image.version'] }}
