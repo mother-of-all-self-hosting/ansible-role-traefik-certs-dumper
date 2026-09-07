@@ -163,13 +163,13 @@
           - image
           - inspect
           - "{{ traefik_certs_dumper_running_image }}"
-      register: traefik_certs_dumper_image_inspect
+      register: traefik_certs_dumper_image_raw
       changed_when: false
 
     - name: Parse the Traefik certs dumper image definition
       ansible.builtin.set_fact:
         traefik_certs_dumper_image_version: >-
-          {{ (traefik_certs_dumper_image_inspect.stdout | from_json)[0].Config.Labels['org.opencontainers.image.version'] }}
+          {{ (traefik_certs_dumper_image_raw.stdout | from_json)[0].Config.Labels['org.opencontainers.image.version'] }}
 
     # `traefik_certs_dumper_version` carries a leading `v` (`v3.14.0`) but the binary
     # reports the bare version (`3.14.0`). Any leading `v` is normalized
