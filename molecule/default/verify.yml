@@ -148,13 +148,13 @@
           - container
           - inspect
           - traefik-certs-dumper
-      register: traefik_certs_dumper_container_inspect
+      register: traefik_certs_dumper_container_raw
       changed_when: false
 
     - name: Parse the running Traefik certs dumper container definition
       ansible.builtin.set_fact:
         traefik_certs_dumper_running_image: >-
-          {{ (traefik_certs_dumper_container_inspect.stdout | from_json)[0].Config.Image }}
+          {{ (traefik_certs_dumper_container_raw.stdout | from_json)[0].Config.Image }}
 
     - name: Inspect the image the running Traefik certs dumper container uses
       ansible.builtin.command:
