@@ -171,14 +171,13 @@
         traefik_certs_dumper_image_version: >-
           {{ (traefik_certs_dumper_image_inspect.stdout | from_json)[0].Config.Labels['org.opencontainers.image.version'] }}
 
-    # The role's version variable carries a leading `v` (`v2.11.4`), the label
-    # does not (`2.11.4`). Any leading `v` is normalized away on both sides, so
-    # that this keeps holding if either side ever changes its mind.
+    # `traefik_certs_dumper_version` carries a leading `v` (`v3.14.0`) but the binary
+    # reports the bare version (`3.14.0`). Any leading `v` is normalized
+    # away on both sides, so that this keeps holding if either side ever stops
+    # carrying one.
     - name: Assert the running Traefik certs dumper is the version this role installs
       ansible.builtin.assert:
-        that: >-
-          (traefik_certs_dumper_image_version | trim | regex_replace('^v', ''))
-          == (traefik_certs_dumper_defaults.traefik_certs_dumper_version | regex_replace('^v', ''))
+        that: "(traefik_certs_dumper_image_version | trim | regex_replace('^v', '')) == (traefik_certs_dumper_defaults.traefik_certs_dumper_version | regex_replace('^v', ''))"
         fail_msg: "Traefik certs dumper reports {{ traefik_certs_dumper_image_version | trim | default('none') }}, expected {{ traefik_certs_dumper_defaults.traefik_certs_dumper_version }}"
         success_msg: "Traefik certs dumper reports {{ traefik_certs_dumper_image_version | trim }}"
 
