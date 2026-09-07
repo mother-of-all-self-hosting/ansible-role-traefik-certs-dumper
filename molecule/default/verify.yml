@@ -27,21 +27,27 @@
         file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
         name: traefik_certs_dumper_defaults
 
-    - name: Wait for Traefik certs dumper service to become active (up to 180s)
-      ansible.builtin.systemd:
+    - name: Wait for the Traefik certs dumper systemd service to become active (up to 180s)
+      ansible.builtin.systemd_service:
         name: traefik-certs-dumper.service
       register: traefik_certs_dumper_service
       until: traefik_certs_dumper_service.status.ActiveState == 'active'
       retries: 36
       delay: 5
+      # So that giving up is reported by the assertion below rather than as a
+      # wall of systemd unit properties.
+      failed_when: false
 
-    - name: Assert Traefik certs dumper service is active
+    # `Restart=always` in the systemd unit means that even a container which crashes
+    # and gets restarted reads as active here, so this is a precondition rather than
+    # a result.
+    - name: Assert the Traefik certs dumper systemd service is active
       ansible.builtin.assert:
         that: traefik_certs_dumper_service.status.ActiveState == 'active'
-        fail_msg: "traefik-certs-dumper.service not active ({{ traefik_certs_dumper_service.status.ActiveState }})"
+        fail_msg: "traefik-certs-dumper.service is not active ({{ traefik_certs_dumper_service.status.ActiveState }})"
         success_msg: "traefik-certs-dumper.service is active"
 
-    - name: Retrieve Traefik certs dumper service log for debugging
+    - name: Retrieve the Traefik certs dumper systemd service log for debugging
       when: traefik_certs_dumper_debug_service_enabled | bool
       ansible.builtin.command:
         cmd: journalctl -xeu traefik-certs-dumper.service
