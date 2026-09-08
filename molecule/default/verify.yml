@@ -149,11 +149,7 @@
     # actually dumping, rather than to whatever happens to be pulled.
     - name: Determine the image the running Traefik certs dumper container uses
       ansible.builtin.command:
-        argv:
-          - docker
-          - container
-          - inspect
-          - traefik-certs-dumper
+        cmd: docker container inspect traefik-certs-dumper
       register: traefik_certs_dumper_container_raw
       changed_when: false
 
@@ -164,11 +160,7 @@
 
     - name: Inspect the image the running Traefik certs dumper container uses
       ansible.builtin.command:
-        argv:
-          - docker
-          - image
-          - inspect
-          - "{{ traefik_certs_dumper_running_image }}"
+        cmd: docker image inspect {{ traefik_certs_dumper_running_image }}
       register: traefik_certs_dumper_image_raw
       changed_when: false
 
