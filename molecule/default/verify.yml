@@ -50,7 +50,7 @@
     - name: Retrieve the Traefik certs dumper systemd service log for debugging
       when: traefik_certs_dumper_debug_service_enabled | bool
       ansible.builtin.command:
-        cmd: journalctl -xeu traefik-certs-dumper.service
+        cmd: journalctl --no-pager --output=cat --unit=traefik-certs-dumper.service
       changed_when: false
 
     # ---------------------------------------------------------------------
