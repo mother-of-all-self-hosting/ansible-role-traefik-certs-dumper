@@ -19,6 +19,8 @@
     traefik_certs_dumper_molecule_appended_certificate_path: >-
       {{ traefik_certs_dumper_dumped_certificates_path }}/{{ traefik_certs_dumper_molecule_appended_domain }}/certificate.crt
   tasks:
+    - name: Verify that Traefik certs dumper works
+      block:
     # The role is not included in this playbook, so its defaults are not in
     # scope. Reading defaults/main.yml directly ties the version assertion
     # below.
@@ -482,3 +484,19 @@
           - "Traefik certs dumper dumped certificate: {{ traefik_certs_dumper_dumped_subject.stdout | trim }}"
           - "Traefik certs dumper re-dumped after acme.json changed: {{ traefik_certs_dumper_molecule_appended_domain }}"
           - "Traefik certs dumper waiter results: {{ traefik_certs_dumper_waiter_results.results | map(attribute='stdout_lines') | list }}"
+
+      rescue:
+        # Whatever went wrong, the reason is almost always in the systemd service log.
+        - name: Retrieve the Traefik certs dumper systemd service log
+          ansible.builtin.command:
+            cmd: journalctl --no-pager --output=cat --unit=traefik-certs-dumper.service
+          register: traefik_certs_dumper_service_log
+          changed_when: false
+
+        - name: Show the Traefik certs dumper systemd service log
+          ansible.builtin.debug:
+            var: traefik_certs_dumper_service_log.stdout_lines
+
+        - name: Fail because verification did not pass
+          ansible.builtin.fail:
+            msg: "Traefik certs dumper verification failed. The systemd service log is printed above."
