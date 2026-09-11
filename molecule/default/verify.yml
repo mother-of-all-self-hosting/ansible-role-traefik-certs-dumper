@@ -9,6 +9,7 @@
   hosts: all
   become: true
   gather_facts: false
+
   vars:
     traefik_certs_dumper_molecule_dumped_certificate_path: >-
       {{ traefik_certs_dumper_dumped_certificates_path }}/{{ traefik_certs_dumper_molecule_domain }}/certificate.crt
@@ -18,6 +19,10 @@
       {{ traefik_certs_dumper_dumped_certificates_path }}/private/letsencrypt.key
     traefik_certs_dumper_molecule_appended_certificate_path: >-
       {{ traefik_certs_dumper_dumped_certificates_path }}/{{ traefik_certs_dumper_molecule_appended_domain }}/certificate.crt
+
+    traefik_certs_dumper_verify_units:
+      - traefik-certs-dumper.service
+
   tasks:
     - name: Verify that Traefik certs dumper works
       block:
@@ -29,13 +34,14 @@
             file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
             name: traefik_certs_dumper_defaults
 
-        - name: Wait for the Traefik certs dumper systemd service to become active (up to 180s)
+        - name: Wait for the Traefik certs dumper systemd services to become active (up to 180s each)
           ansible.builtin.systemd_service:
-            name: traefik-certs-dumper.service
-          register: traefik_certs_dumper_service
-          until: traefik_certs_dumper_service.status.ActiveState == 'active'
+            name: "{{ item }}"
+          register: traefik_certs_dumper_services
+          until: traefik_certs_dumper_services.status.ActiveState == 'active'
           retries: 36
           delay: 5
+          loop: "{{ traefik_certs_dumper_verify_units }}"
           # So that giving up is reported by the assertion below rather than as a
           # wall of systemd unit properties.
           failed_when: false
@@ -43,17 +49,20 @@
         # `Restart=always` in the systemd unit means that even a container which crashes
         # and gets restarted reads as active here, so this is a precondition rather than
         # a result.
-        - name: Assert the Traefik certs dumper systemd service is active
+        - name: Assert the Traefik certs dumper systemd services are active
           ansible.builtin.assert:
-            that: traefik_certs_dumper_service.status.ActiveState == 'active'
-            fail_msg: "traefik-certs-dumper.service is not active ({{ traefik_certs_dumper_service.status.ActiveState }})"
-            success_msg: "traefik-certs-dumper.service is active"
+            that: traefik_certs_dumper_services.results | map(attribute='status.ActiveState') | unique | list == ['active']
+            fail_msg: >-
+              Not every service is active:
+              {{ dict(traefik_certs_dumper_verify_units | zip(traefik_certs_dumper_services.results | map(attribute='status.ActiveState'))) }}
+            success_msg: "Every systemd service is active"
 
-        - name: Retrieve the Traefik certs dumper systemd service log for debugging
+        - name: Retrieve the Traefik certs dumper systemd services log for debugging
           when: traefik_certs_dumper_debug_service_enabled | bool
           ansible.builtin.command:
-            cmd: journalctl --no-pager --output=cat --unit=traefik-certs-dumper.service
+            cmd: "journalctl --no-pager --output=cat --unit={{ item }}"
           changed_when: false
+          loop: "{{ traefik_certs_dumper_verify_units }}"
 
         # ---------------------------------------------------------------------
         # The scripts the role installs are something the kernel will execute
@@ -479,7 +488,7 @@
         - name: Show the Traefik certs dumper verification summary
           ansible.builtin.debug:
             msg:
-              - "Traefik certs dumper systemd: {{ traefik_certs_dumper_service.status.ActiveState }}"
+              - "Traefik certs dumper systemd: {% for unit, state in traefik_certs_dumper_verify_units | zip(traefik_certs_dumper_services.results | map(attribute='status.ActiveState')) %}{{ unit }} ({{ state }}){% if not loop.last %}, {% endif %}{% endfor %}"
               - "Traefik certs dumper image: {{ traefik_certs_dumper_running_image }} ({{ traefik_certs_dumper_image_version | trim }})"
               - "Traefik certs dumper dumped certificate: {{ traefik_certs_dumper_dumped_subject.stdout | trim }}"
               - "Traefik certs dumper re-dumped after acme.json changed: {{ traefik_certs_dumper_molecule_appended_domain }}"
