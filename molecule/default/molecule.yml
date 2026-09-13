@@ -31,6 +31,7 @@ provisioner:
       all:
         # Helper variables
         traefik_certs_dumper_debug_service_enabled: false
+        traefik_certs_dumper_restarts_check_enabled: true
 
         # Where the scenario keeps the certificate material it generates, and
         # the helper script which assembles Traefik's `acme.json` out of it.
